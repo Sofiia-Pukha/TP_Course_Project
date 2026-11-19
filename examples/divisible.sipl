@@ -1,0 +1,4 @@
+begin
+  while X > 0 do X := X - Y;
+  if X = 0 then R := 1 else R := 0
+end

@@ -1,0 +1,11 @@
+begin
+  S := 0;
+  K := 0;
+  I := N;
+  while I > 0 do
+  begin
+    K := K + 2;
+    S := S + K;
+    I := I - 1
+  end
+end
