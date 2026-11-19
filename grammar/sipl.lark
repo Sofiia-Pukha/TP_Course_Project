@@ -1,0 +1,31 @@
+// Граматика SIPL за БНФ з практикуму (Lark, EBNF).
+// Неоднозначності БНФ знято пріоритетами (див. docs/grammar.md).
+
+start: "begin" stm "end"
+
+stm: simple_stm (";" simple_stm)*
+simple_stm: assign | if_stm | while_stm | block | skip_stm
+assign: NAME ":=" aexp
+if_stm: "if" bexp "then" simple_stm "else" simple_stm
+while_stm: "while" bexp "do" simple_stm
+block: "begin" stm "end"
+skip_stm: "skip"
+
+aexp: term (ADDOP term)*
+term: factor ("*" factor)*
+factor: NUMBER | "-" NUMBER | NAME | "(" aexp ")"
+ADDOP: "+" | "-"
+
+bexp: bnot (OROP bnot)*
+bnot: NOTOP bnot | batom
+batom: "(" bexp ")" | aexp CMPOP aexp
+OROP: "∨" | "or"
+NOTOP: "¬" | "not"
+CMPOP: "=" | ">"
+
+// ім'я змінної не може збігатися з ключовим словом
+NAME: /(?!(begin|end|if|then|else|while|do|skip|or|not)\b)[A-Za-z_][A-Za-z0-9_]*/
+NUMBER: /[0-9]+/
+
+%import common.WS
+%ignore WS
